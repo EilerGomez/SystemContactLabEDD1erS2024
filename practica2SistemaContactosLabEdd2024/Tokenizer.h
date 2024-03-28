@@ -6,11 +6,26 @@
 #include <sstream>
 #include "Tokens.h"
 #include <regex>
+#include "list"
+#include "FieldTable.h"
 
 using namespace std;
 
 class Tokenizer {
+
+
 public:
+
+    struct estructura{
+        string name;
+        string value;//o tipo STRING INTEGER, ETC
+        //tiene que tener el puntero hacia un arbol
+
+        estructura(const string& n, const string& v) : name(n), value(v) {}
+    };
+    static list<estructura> campos;
+    static string campo;
+
     static bool isValidDate(const string& dateStr) {
         regex dateRegex("^\\d{2}-\\d{2}-\\d{4}$");
         return regex_match(dateStr, dateRegex);
@@ -80,83 +95,120 @@ public:
         return tokens;
     }
 
-    static bool isCorrect(vector<Tokens> tokens){
-        bool iscorrect=false;
+    static int isCorrect(vector<Tokens> tokens){
+        int iscorrect=0;
         int caso=0;
+        string n;
+        string v;
         for (const Tokens& token : tokens) {
 
             switch (caso) {
                 case 0:
                     if(token.getName()=="ADD"){caso=1;}
                     else if(token.getName()=="FIND"){caso=16;}
+                    else{caso=-1;}
                     break;
                 case 1:
                     if(token.getName()=="NEW-GROUP"){caso=2;}
                     else if(token.getName()=="CONTACT"){caso=9;}
+                    else{caso=-1;}
                     break;
                 case 2:
-                    if(token.getName()=="TEXTO_PLANO"){caso=3;}
+                    if(token.getName()=="TEXTO_PLANO"){
+                        caso=3;
+                        campo=token.getValue();
+                    }
+                    else{caso=-1;}
                     break;
                 case 3:
                     if(token.getName()=="FIELDS"){caso=4;}
+                    else{caso=-1;}
                     break;
                 case 4:
                     if(token.getName()=="APARENTESIS"){caso=5;}
+                    else{caso=-1;}
                     break;
                 case 5:
-                    if(token.getName()=="TEXTO_PLANO"){caso=6;}
+                    if(token.getName()=="TEXTO_PLANO"){caso=6;
+                        n=token.getValue();
+                    }
+                    else{caso=-1;}
                     break;
                 case 6:
                     if(token.getName()=="STRING"||token.getName()=="INTEGER"||token.getName()=="DATE"){
                         caso=7;
+                        v=token.getName();
+                        campos.push_back(estructura(n,v));
                     }else if(token.getName()=="CPARENTESIS"){caso=8;}
+                    else{caso=-1;}
                     break;
                 case 7:
                     if(token.getName()=="COMA"){caso=5;}
                     else if(token.getName()=="CPARENTESIS"){caso=8;}
+                    else{caso=-1;}
                     break;
                 case 8:
                     if(token.getName()=="FIN"){
 
-                        iscorrect=true;//estado de aceptacion
+                        iscorrect=1;//estado de aceptacion
                     }
+                    else{caso=-1;}
                     break;
                 case 9:
                     if(token.getName()=="IN"){caso=10;}
+                    else{caso=-1;}
                     break;
                 case 10:if(token.getName()=="TEXTO_PLANO"){caso=11;}
+                    else{caso=-1;}
                     break;
                 case 11:if(token.getName()=="FIELDS"){caso=12;}
+                    else{caso=-1;}
                     break;
                 case 12:if(token.getName()=="APARENTESIS"){caso=13;}
+                    else{caso=-1;}
                     break;
                 case 13:if(token.getName()=="TEXTO_PLANO"||token.getName()=="NUMERO"||token.getName()==
                 "FECHA"||token.getName()=="CARACTER"){caso=14;}
+                    else{caso=-1;}
                     break;
                 case 14:if(token.getName()=="COMA"){caso=13;}
                         else if(token.getName()=="CPARENTESIS"){caso=15;}
+                    else{caso=-1;}
                     break;
                 case 15:if(token.getName()=="FIN"){
                     iscorrect= true;}//ESTADO DE ACEPTACION
+                    else{caso=-1;}
                     break;
                 case 16:if(token.getName()=="CONTACT"){caso=17;}
+                    else{caso=-1;}
                     break;
                 case 17:if(token.getName()=="IN"){caso=18;}
+                    else{caso=-1;}
                     break;
                 case 18:if(token.getName()=="TEXTO_PLANO"){caso=19;}
+                    else{caso=-1;}
                     break;
                 case 19:if(token.getName()=="CONTACT-FIELD"){caso=20;}
+                    else{caso=-1;}
                     break;
                 case 20:if(token.getName()=="TEXTO_PLANO"){caso=21;}
+                    else{caso=-1;}
                     break;
                 case 21:if(token.getName()=="COMPARACIONIGUAL"){caso=22;}
+                    else{caso=-1;}
                     break;
                 case 22:if(token.getName()=="TEXTO_PLANO"){caso=23;}
+                    else{caso=-1;}
                     break;
                 case 23:if(token.getName()=="FIN"){
                     iscorrect=true;}//ultimo estado de aceptacion
+                    else{caso=-1;}
+                    break;
+                case -1:
+                        iscorrect=-1;
                     break;
                 default:
+                    iscorrect=-1;
                     break;
             }
             //cout<<caso<<endl;

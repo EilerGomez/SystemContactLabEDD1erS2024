@@ -2,9 +2,9 @@
 #include "iostream"
 using namespace std;
 void Menu::inicio() {
-    string input;
+    string input="nadaxd";
     vector<Tokens> tokens;
-
+    ContactGroups contactos;
     int opcion = 1;
     while (opcion > 0) {
         cout << "Elija una opcion: " << endl;
@@ -13,18 +13,30 @@ void Menu::inicio() {
         cin.ignore();
         switch (opcion) {
             case 1:
-                cout << "Seleccionó la opción de Consola." << endl;
-                cout << "Ingrese un texto: ";
-                std::getline(std::cin, input);
-               cout<<"CREAR LA TABLA HASH!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
-                tokens = Tokenizer::tokenize(input);
-                /*for (const Tokens& token : tokens) {
-                    cout << "Nombre: " << token.getName() << ", Valor: " << token.getValue() << endl;
-                }*/
-                if(Tokenizer::isCorrect(tokens)){
-                    cout<<"El texto ingresado es correcto"<<endl;
-                }else{
-                    cout<<"Comando no valido"<<endl;
+                while(input!="exit"){
+                    cout << "[sys@contact] ~$ ";
+                    std::getline(std::cin, input);
+                    tokens = Tokenizer::tokenize(input);
+                    /*for (const Tokens& token : tokens) {
+                        cout << "Nombre: " << token.getName() << ", Valor: " << token.getValue() << endl;
+                    }*/
+                    if(Tokenizer::isCorrect(tokens)==1){//fue agregacion de un grupo
+                        //cout<<"El texto ingresado es correcto"<<endl;
+                        int indicetab=contactos.insertGroup(Tokenizer::campo);
+                        //cout<<"listo para insertar el grupo: "+Tokenizer::campo<<endl;
+                        for(Tokenizer::estructura st: Tokenizer::campos){
+                            contactos.insertField(Tokenizer::campo,st.value,st.name, indicetab);
+                        }
+                        //contactos.printTable();
+                        //cout<<Tokenizer::campos.size()<<endl;
+                        cout<<"     Grupo y campos guardados correctamente "<<endl;
+                        Tokenizer::campos.clear();
+                    }else{
+                        if(input!="exit"){
+                            cout<<"Comando no valido"<<endl;
+                            Tokenizer::campos.clear();
+                        }
+                    }
                 }
                 break;
             case 2:
