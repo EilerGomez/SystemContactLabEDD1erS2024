@@ -6,12 +6,14 @@
 #include <string>
 #include "Tokenizer.h"
 #include "Tokens.h"
+#include "Utilities.h"
 
 using namespace std;
 
 class Menu {
 public:
     void inicio();
+    Utilities utilidades;
     ~Menu();
 };
 

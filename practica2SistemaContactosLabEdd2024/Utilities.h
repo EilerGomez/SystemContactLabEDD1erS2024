@@ -7,12 +7,14 @@
 #include "list"
 #include "FieldTable.h"
 #include "Tokenizer.h"
+#include "vector"
 
 class Utilities {
 public:
     Utilities();
 
     bool isCorrectUnityDate(string nameFt, string nameE){
+        cout<<"comparando "<<nameFt<<" == "<<nameE<<endl;
         bool iscorrect=false;
         if(nameFt=="STRING"&&nameE=="TEXTO_PLANO"){
             iscorrect=true;
@@ -28,17 +30,21 @@ public:
     }
     bool isCompatibily(list<FieldTable::Field> listFT,list<Tokenizer::estructura> listE){
         bool iscorrect=true;
-        for (int i = 0; i < listFT.size(); ++i) {
-            for (const auto& pair : listFT) {
-                for(const auto& pairE : listE){
-                    if(!isCorrectUnityDate(pair.name,pairE.name)){
-                        iscorrect=false;
-                        break;
-                    }
-                }
-
+            vector<string> listFtmp;
+            vector<string> listEtmp;
+        for (const auto& pair : listFT) {
+            listFtmp.push_back(pair.name);
+        }
+        for(Tokenizer::estructura st:listE){
+            listEtmp.push_back(st.name);
+        }
+        for (int i = 0; i < listFtmp.size(); ++i) {
+            if(!isCorrectUnityDate(listFtmp[i],listEtmp[i])){
+                iscorrect=false;
+                break;
             }
         }
+
 
         return iscorrect;
     }
