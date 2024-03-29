@@ -135,7 +135,8 @@ public:
                     else{caso=-1;}
                     break;
                 case 6:
-                    if(token.getName()=="STRING"||token.getName()=="INTEGER"||token.getName()=="DATE"){
+                    if(token.getName()=="STRING"||token.getName()=="INTEGER"||token.getName()=="DATE"
+                    ||token.getName()=="CHAR"){
                         caso=7;
                         v=token.getName();
                         campos.push_back(estructura(n,v));
@@ -158,7 +159,10 @@ public:
                     if(token.getName()=="IN"){caso=10;}
                     else{caso=-1;}
                     break;
-                case 10:if(token.getName()=="TEXTO_PLANO"){caso=11;}
+                case 10:if(token.getName()=="TEXTO_PLANO"){
+                    caso=11;
+                    campo=token.getValue();
+                    }
                     else{caso=-1;}
                     break;
                 case 11:if(token.getName()=="FIELDS"){caso=12;}
@@ -168,7 +172,12 @@ public:
                     else{caso=-1;}
                     break;
                 case 13:if(token.getName()=="TEXTO_PLANO"||token.getName()=="NUMERO"||token.getName()==
-                "FECHA"||token.getName()=="CARACTER"){caso=14;}
+                            "FECHA"||token.getName()=="CARACTER"){
+                    caso=14;
+                    n=token.getName();
+                    v=token.getValue();
+                    campos.push_back(estructura(n,v));
+                    }
                     else{caso=-1;}
                     break;
                 case 14:if(token.getName()=="COMA"){caso=13;}
@@ -176,7 +185,7 @@ public:
                     else{caso=-1;}
                     break;
                 case 15:if(token.getName()=="FIN"){
-                    iscorrect= true;}//ESTADO DE ACEPTACION
+                    iscorrect= 2;}//ESTADO DE ACEPTACION
                     else{caso=-1;}
                     break;
                 case 16:if(token.getName()=="CONTACT"){caso=17;}

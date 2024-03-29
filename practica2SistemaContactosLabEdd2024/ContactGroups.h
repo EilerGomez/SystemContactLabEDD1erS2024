@@ -112,6 +112,59 @@ public:
         }
         return ""; // Devolver cadena vacía si el grupo no existe
     }
+
+    int existGruop(const string& groupName){
+        int exist = -5;
+        int index = hash(groupName);
+        for (const auto& pair : table[index]) {
+            if (pair.first == groupName) {
+                exist=index;
+            }
+        }
+        if(exist<0){
+            cout<<"el campo no se encuentra en el idice dado por el hash"<<endl;
+            for (int i = index; i < tableSize; ++i) {
+                for(const auto& pair : table[i]){
+                    if(!table[i].empty()){
+                        if (pair.first == groupName) {
+                            exist=i;
+                            i=tableSize;
+                        }
+                    }
+                }
+            }
+            index = hash(groupName);
+            cout<<index<<endl;
+            if(exist<0){
+                for (int i = index; i >=0 ; --i) {
+                    for(const auto& pair : table[i]){
+                        if(!table[i].empty()){
+                            if (pair.first == groupName) {
+                                exist=i;
+                                i=-1;
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+        return exist;
+    }
+
+    //devolver la lista de fields de un grupo dado su indice
+
+    FieldTable traerTablaDeGrupo(int index, string groupName){
+        FieldTable tmp;
+        for (const auto& pair : table[index]) {
+            if (pair.first == groupName) {
+                return pair.second;
+            }
+        }
+
+        return tmp;
+    }
+
 };
 
 

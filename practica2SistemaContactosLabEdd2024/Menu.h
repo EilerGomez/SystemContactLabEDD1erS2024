@@ -12,6 +12,7 @@ using namespace std;
 class Menu {
 public:
     void inicio();
+    ~Menu();
 };
 
 #endif //PRACTICA2SISTEMACONTACTOSLABEDD2024_MENU_H
