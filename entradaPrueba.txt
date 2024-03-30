@@ -1,0 +1,11 @@
+ADD NEW-GROUP clientes FIELDS ( name STRING , tel INTEGER , day DATE ) ;
+ADD NEW-GROUP privado FIELDS ( name STRING , tel INTEGER , day DATE , signo CHAR ) ;
+ADD NEW-GROUP inges FIELDS ( nombre STRING , tel INTEGER , day DATE ) ;
+ADD NEW-GROUP amigos FIELDS ( name STRING , tel INTEGER , day DATE ) ;
+ADD NEW-GROUP familia FIELDS ( name STRING , tel INTEGER , day DATE ) ;
+ADD NEW-GROUP call FIELDS ( name STRING , tel INTEGER , day DATE ) ;
+ADD NEW-GROUP socios FIELDS ( name STRING , tel INTEGER , day DATE ) ;
+
+
+ADD CONTACT IN privado FIELDS ( Pedro223 , 12345678 , 02-05-1998 , y ) ;
+metodo find o sea buscar y traer los elementos
