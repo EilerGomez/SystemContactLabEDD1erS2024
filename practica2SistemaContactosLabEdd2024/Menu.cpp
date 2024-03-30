@@ -1,6 +1,7 @@
 #include "Menu.h"
 #include "iostream"
 #include "Utilities.h"
+#include "Reportes.h"
 using namespace std;
 Menu::~Menu() {
     // Implementación del destructor
@@ -9,6 +10,8 @@ void Menu::inicio() {
     string input="nadaxd";
     vector<Tokens> tokens;
     ContactGroups contactos;
+    int opcionReportes=-2;
+    Reportes reportes;
     int opcion = 1;
     while (opcion > 0) {
         cout << "Elija una opcion: " << endl;
@@ -99,7 +102,39 @@ void Menu::inicio() {
                 input="nada";
                 break;
             case 2:
-                cout << "Seleccionó la opción de Reportes." << endl;
+
+
+                while(opcionReportes!=-1){
+
+                    cout << "1.Cantidad de datos por Grupo"<< endl<<"2.Cantidad de datos de todo el sistema"<<endl;
+                    cout<<"3.Cantidad de Contactos con el mismo tipo de dato del campo de criterio de ordenamiento."<<endl;
+                    cout<<"4.Cantidad de Contactos por Grupo."<<endl<<"5.Archivo Log del sistema."<<endl<<"-1.Salir"<<endl;
+                    cin>>opcionReportes;
+                    switch (opcionReportes) {
+                        case 1:
+                            cout<<"-------------------------------------"<<endl;
+                            reportes.cantidadDatosPorGrupo(contactos.table,contactos.tableSize);
+                            cout<<"-------------------------------------"<<endl;
+                            break;
+                        case 2:
+                            cout<<"----------------------------------------------------"<<endl;
+                            reportes.cantidadDatosTodoElSistema(contactos.table,contactos.tableSize);
+                            cout<<"----------------------------------------------------"<<endl;
+                            break;
+                        case 3:cout<<"Reporte3"<<endl;
+                            break;
+                        case 4:
+                            cout<<"-------------------------------------"<<endl;
+                            reportes.cantidadContactosPorGrupo(contactos.table,contactos.tableSize);
+                            cout<<"-------------------------------------"<<endl;
+                            break;
+                        case 5:cout<<"Reporte5"<<endl;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                opcionReportes=-2;
                 break;
             case 3:
                 cout << "Seleccionó la opción de Gráficos." << endl;

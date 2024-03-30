@@ -122,3 +122,14 @@ void ArbolAVL::buscarElemento(Nodo* nodo, const string& palabra, vector<Nodo*>& 
     buscarElemento(nodo->derecha, palabra, nodosEncontrados);
 }
 
+
+int ArbolAVL::contarElementos(Nodo* nodo) {
+    if (nodo == nullptr) {
+        return 0;
+    }
+    return 1 + contarElementos(nodo->izquierda) + contarElementos(nodo->derecha);
+}
+int ArbolAVL::contarElementos() {
+    return contarElementos(raiz);
+}
+

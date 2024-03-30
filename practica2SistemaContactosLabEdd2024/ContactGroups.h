@@ -8,7 +8,7 @@
 
 // Clase para representar la tabla hash de grupos de contactos
 class ContactGroups {
-private:
+public:
     static const int INITIAL_SIZE = 5; // Tamaño inicial de la tabla hash
     constexpr static const double LOAD_FACTOR_THRESHOLD=60; // Umbral de factor de carga para rehashing
     int numGroups; // Número de grupos de contactos
@@ -58,7 +58,7 @@ private:
         return index;
     }
 
-public:
+
     ContactGroups() : numGroups(0), tableSize(INITIAL_SIZE) {
         table = new list<pair<string, FieldTable>>[tableSize];
     }
@@ -84,8 +84,8 @@ public:
         for (int i = 0; i < tableSize; ++i) {
             std::cout << "Bucket " << i << ":" << std::endl;
             for (const auto& pair : table[i]) {
-                std::cout << "    Group Name: " << pair.first << std::endl;
-                std::cout << "    Fields:" << std::endl;
+                cout << "    Group Name: " << pair.first << endl;
+                cout << "    Fields:" << endl;
                 for (const auto& field : pair.second.fields) {
                     std::cout << "        " << field.name << ": " << field.value << std::endl;
                     std::cout << "            AVL Tree:" << std::endl;
@@ -94,6 +94,7 @@ public:
             }
         }
     }
+
 
 
     // Insertar un campo en un grupo de contactos

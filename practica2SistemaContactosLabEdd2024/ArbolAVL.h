@@ -31,6 +31,8 @@ public:
     void buscarElemento(Nodo* nodo, const string& palabra, vector<Nodo*>& nodosEncontrados);
     Nodo* raiz;
     Nodo* insertado;
+    int contarElementos(Nodo* nodo);
+    int contarElementos();
 
 private:
     int altura(Nodo* nodo);

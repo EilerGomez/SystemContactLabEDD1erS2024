@@ -5,8 +5,8 @@ TARGET = programa
 #all
 all: .all-post
 
-.all-post: Menu.o Main.o Tokens.o Tokenizer.o FieldTable.o ContactGroups.o Date.o ArbolAVL.o Utilities.o#main es el principal o main
-	$(CXX) Menu.o Main.o Tokens.o Tokenizer.o FieldTable.o ContactGroups.o Date.o ArbolAVL.o Utilities.o -o $(TARGET)
+.all-post: Menu.o Main.o Tokens.o Tokenizer.o FieldTable.o ContactGroups.o Date.o ArbolAVL.o Utilities.o Reportes.o#main es el principal o main
+	$(CXX) Menu.o Main.o Tokens.o Tokenizer.o FieldTable.o ContactGroups.o Date.o ArbolAVL.o Utilities.o Reportes.o -o $(TARGET)
 
 
 
@@ -26,5 +26,7 @@ ArbolAVL.o: ArbolAVL.cpp ArbolAVL.h
 		$(CXX) -c ArbolAVL.cpp
 Utilities.o: Utilities.cpp Utilities.h
 		$(CXX) -c Utilities.cpp
+Reportes.o: Reportes.cpp Reportes.h
+		$(CXX) -c Reportes.cpp
 clean:
 	$(RM) *.o saludo core
