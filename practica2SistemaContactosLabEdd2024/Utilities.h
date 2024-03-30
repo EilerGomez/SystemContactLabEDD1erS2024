@@ -8,6 +8,8 @@
 #include "FieldTable.h"
 #include "Tokenizer.h"
 #include "vector"
+#include "iostream"
+#include "ArbolAVL.h"
 
 class Utilities {
 public:
@@ -48,6 +50,66 @@ public:
 
         return iscorrect;
     }
+
+    void insertarANodos(list<FieldTable::Field>& listFT, list<Tokenizer::estructura> listE) {
+        vector<string> listEtmp;
+        for (const auto& st : listE) {
+            listEtmp.push_back(st.value);
+        }
+
+        Nodo* tmp = nullptr;
+        int i = 0;
+        for (const auto& pair : listFT) {
+            pair.arbol.insertar(listEtmp[i]);
+            if (i == 0) {
+                tmp = pair.arbol.insertado;
+                tmp->anterior=nullptr;
+            } else if (i == listEtmp.size() - 1) {
+                tmp->siguiente = pair.arbol.insertado;
+                pair.arbol.insertado->anterior=tmp;
+                pair.arbol.insertado->siguiente = nullptr;
+                tmp=pair.arbol.insertado;
+            } else {
+                tmp->siguiente = pair.arbol.insertado;
+                pair.arbol.insertado->anterior = tmp;
+                tmp = pair.arbol.insertado;
+            }
+            i++;
+        }
+
+        while(tmp!=nullptr){
+            cout<<tmp->palabra<<" --- ";
+            tmp=tmp->anterior;
+        }
+        cout<<endl;
+    }
+
+    void llevarAlInicio(Nodo* &tmp){
+        while(tmp->anterior != nullptr){
+            tmp = tmp->anterior;
+        }
+    }
+
+    void imprimirContacto(Nodo* nodo, vector<string> fields){
+        int i = 0;
+        cout << "CONTACTO: [";
+        while(nodo != nullptr){
+            cout << fields[i] << " : " << nodo->palabra << ", ";
+            nodo = nodo->siguiente; // Avanzar al siguiente nodo
+            i++;
+        }
+        cout << "]" << endl;
+    }
+
+    void imprimirBusqueda(vector<Nodo*> nodos, vector<string> fields){
+        for(Nodo* nodo : nodos){
+            llevarAlInicio(nodo);
+            imprimirContacto(nodo, fields);
+        }
+    }
+
+
+
 
 };
 

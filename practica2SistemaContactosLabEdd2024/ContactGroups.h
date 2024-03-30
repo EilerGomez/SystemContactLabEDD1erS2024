@@ -86,10 +86,15 @@ public:
             for (const auto& pair : table[i]) {
                 std::cout << "    Group Name: " << pair.first << std::endl;
                 std::cout << "    Fields:" << std::endl;
-                pair.second.printFields(); // Método para imprimir los campos de FieldTable
+                for (const auto& field : pair.second.fields) {
+                    std::cout << "        " << field.name << ": " << field.value << std::endl;
+                    std::cout << "            AVL Tree:" << std::endl;
+                    cout<<"                         ";field.arbol.imprimirInOrder(); // Imprime el árbol AVL asociado al campo
+                }
             }
         }
     }
+
 
     // Insertar un campo en un grupo de contactos
     void insertField(const string& groupName, const string& fieldName, const string& value, int indice) {
@@ -103,14 +108,13 @@ public:
     }
 
     // Obtener el valor de un campo en un grupo de contactos
-    string getField(const string& groupName, const string& fieldName) {
-        int index = hash(groupName);
+    string getField(const int& index, const string& fieldName) {
         for (const auto& pair : table[index]) {
-            if (pair.first == groupName) {
+            if (pair.first == fieldName) {
                 return pair.second.getField(fieldName);
             }
         }
-        return ""; // Devolver cadena vacía si el grupo no existe
+        return "null"; // Devolver cadena vacía si el grupo no existe
     }
 
     int existGruop(const string& groupName){
@@ -154,15 +158,14 @@ public:
 
     //devolver la lista de fields de un grupo dado su indice
 
-    FieldTable traerTablaDeGrupo(int index, string groupName){
-        FieldTable tmp;
-        for (const auto& pair : table[index]) {
+    FieldTable* traerTablaDeGrupo(int index, string groupName) {
+        for (auto& pair : table[index]) {
             if (pair.first == groupName) {
-                return pair.second;
+                return &(pair.second); // Devolver un puntero a la tabla
             }
         }
 
-        return tmp;
+        return nullptr; // Si no se encuentra, devolver nullptr
     }
 
 };

@@ -4,7 +4,6 @@
 
 #include "ArbolAVL.h"
 #include "Date.h"
-
 ArbolAVL::ArbolAVL() : raiz(nullptr) {}
 
 int ArbolAVL::altura(Nodo* nodo) {
@@ -42,22 +41,23 @@ Nodo* ArbolAVL::rotarIzquierda(Nodo* nodo) {
     return derecha;
 }
 
-Nodo* ArbolAVL::insertar(Nodo* nodo, int telefono) {
+Nodo* ArbolAVL::insertar(Nodo* nodo, const string& palabra) {
     if (nodo == nullptr) {
         Nodo* nuevo = new Nodo;
-        nuevo->telefono = telefono;
+        nuevo->palabra = palabra;
         nuevo->izquierda = nullptr;
         nuevo->derecha = nullptr;
+        nuevo->siguiente= nullptr;
+        nuevo->anterior= nullptr;
         nuevo->altura = 1;
+        insertado =nuevo;
         return nuevo;
     }
 
-    if (telefono < nodo->telefono) {
-        nodo->izquierda = insertar(nodo->izquierda, telefono);
-    } else if (telefono > nodo->telefono) {
-        nodo->derecha = insertar(nodo->derecha, telefono);
+    if (palabra <= nodo->palabra) {
+        nodo->izquierda = insertar(nodo->izquierda, palabra);
     } else {
-        return nodo; // Si el número ya existe, no hacemos nada
+        nodo->derecha = insertar(nodo->derecha, palabra);
     }
 
     nodo->altura = 1 + maximo(altura(nodo->izquierda), altura(nodo->derecha));
@@ -65,26 +65,28 @@ Nodo* ArbolAVL::insertar(Nodo* nodo, int telefono) {
     int balance = altura(nodo->izquierda) - altura(nodo->derecha);
 
     // Casos de rotación
-    if (balance > 1 && telefono < nodo->izquierda->telefono) {
-        return rotarDerecha(nodo);
+    if (balance > 1) {
+        if (palabra <= nodo->izquierda->palabra) {
+            return rotarDerecha(nodo);
+        } else {//rotaciones dobles
+            nodo->izquierda = rotarIzquierda(nodo->izquierda);
+            return rotarDerecha(nodo);
+        }
     }
-    if (balance < -1 && telefono > nodo->derecha->telefono) {
-        return rotarIzquierda(nodo);
-    }
-    if (balance > 1 && telefono > nodo->izquierda->telefono) {
-        nodo->izquierda = rotarIzquierda(nodo->izquierda);
-        return rotarDerecha(nodo);
-    }
-    if (balance < -1 && telefono < nodo->derecha->telefono) {
-        nodo->derecha = rotarDerecha(nodo->derecha);
-        return rotarIzquierda(nodo);
+    if (balance < -1) {
+        if (palabra > nodo->derecha->palabra) {
+            return rotarIzquierda(nodo);
+        } else {
+            nodo->derecha = rotarDerecha(nodo->derecha);
+            return rotarIzquierda(nodo);
+        }
     }
 
     return nodo;
 }
 
-void ArbolAVL::insertar(int telefono) {
-    raiz = insertar(raiz, telefono);
+void ArbolAVL::insertar(const string& palabra) {
+    raiz = insertar(raiz, palabra);
 }
 
 void ArbolAVL::imprimirInOrder() {
@@ -95,7 +97,28 @@ void ArbolAVL::imprimirInOrder() {
 void ArbolAVL::imprimirInOrder(Nodo* nodo) {
     if (nodo != nullptr) {
         imprimirInOrder(nodo->izquierda);
-        cout << nodo->telefono << " ";
+        cout << nodo->palabra << " ";
         imprimirInOrder(nodo->derecha);
     }
 }
+
+vector<Nodo*> ArbolAVL::buscarElemento(const string& palabra) {
+    vector<Nodo*> nodosEncontrados;
+    buscarElemento(raiz, palabra, nodosEncontrados);
+    return nodosEncontrados;
+}
+
+void ArbolAVL::buscarElemento(Nodo* nodo, const string& palabra, vector<Nodo*>& nodosEncontrados) {
+    if (nodo == nullptr) {
+        return;
+    }
+
+    buscarElemento(nodo->izquierda, palabra, nodosEncontrados);
+
+    if (nodo->palabra == palabra) {
+        nodosEncontrados.push_back(nodo);
+    }
+
+    buscarElemento(nodo->derecha, palabra, nodosEncontrados);
+}
+

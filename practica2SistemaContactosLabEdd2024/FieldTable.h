@@ -20,9 +20,10 @@ public:
         string name;
         string value;//o tipo STRING INTEGER, ETC
         //tiene que tener el puntero hacia un arbol
-        ArbolAVL arbol;
+        mutable ArbolAVL arbol;
 
-        Field(const string& n, const string& v, const ArbolAVL arbol) : name(n), value(v), arbol(arbol) {}
+        Field(const string& n, const string& v, const ArbolAVL arbol) : name(n), value(v), arbol(arbol) {
+        }
     };
 
 
@@ -30,10 +31,12 @@ public:
 public:
     list<Field> fields;
     void printFields() const {
-        for (const auto& pair : fields) {
-            std::cout << "        " << pair.name << ": " << pair.value << std::endl;
+        for (const auto& field : fields) {
+            std::cout << "        " << field.name << ": " << field.value << std::endl;
+            field.arbol.imprimirInOrder(); // Llama a la función de impresión directamente desde el objeto original
         }
     }
+
     // Insertar un campo en el grupo de contactos
     void insertField(const string& fieldName, const string& value) {
         ArbolAVL tmp = *new ArbolAVL();

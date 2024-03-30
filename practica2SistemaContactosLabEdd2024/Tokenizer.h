@@ -27,7 +27,7 @@ public:
     static string campo;
 
     static bool isValidDate(const string& dateStr) {
-        regex dateRegex("^\\d{2}-\\d{2}-\\d{4}$");
+        regex dateRegex("^\\d{4}-\\d{2}-\\d{2}$");
         return regex_match(dateStr, dateRegex);
     }
     static bool isNumeric(const string& str) {
@@ -194,23 +194,35 @@ public:
                 case 17:if(token.getName()=="IN"){caso=18;}
                     else{caso=-1;}
                     break;
-                case 18:if(token.getName()=="TEXTO_PLANO"){caso=19;}
+                case 18:if(token.getName()=="TEXTO_PLANO"){caso=19;
+                        campo=token.getValue();
+                    }
                     else{caso=-1;}
                     break;
-                case 19:if(token.getName()=="CONTACT-FIELD"){caso=20;}
+                case 19:if(token.getName()=="CONTACT-FIELD"){caso=20;
+                }
                     else{caso=-1;}
                     break;
-                case 20:if(token.getName()=="TEXTO_PLANO"){caso=21;}
+                case 20:if(token.getName()=="TEXTO_PLANO"){caso=21;
+                        n=token.getName();
+                        v=token.getValue();
+                        campos.push_back(estructura(n,v));
+                    }
                     else{caso=-1;}
                     break;
                 case 21:if(token.getName()=="COMPARACIONIGUAL"){caso=22;}
                     else{caso=-1;}
                     break;
-                case 22:if(token.getName()=="TEXTO_PLANO"){caso=23;}
+                case 22:if(token.getName()=="TEXTO_PLANO"||token.getName()=="NUMERO"||token.getName()==
+                    "FECHA"||token.getName()=="CARACTER"){caso=23;
+                        n=token.getName();
+                        v=token.getValue();
+                        campos.push_back(estructura(n,v));
+                    }
                     else{caso=-1;}
                     break;
                 case 23:if(token.getName()=="FIN"){
-                    iscorrect=true;}//ultimo estado de aceptacion
+                    iscorrect=3;}//ultimo estado de aceptacion
                     else{caso=-1;}
                     break;
                 case -1:

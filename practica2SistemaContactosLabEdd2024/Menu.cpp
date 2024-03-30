@@ -40,27 +40,51 @@ void Menu::inicio() {
                         int index=contactos.existGruop(Tokenizer::campo);
                         if(index!=-5){
                             cout<<"existe el grupo, en el indice "<<index<<endl;
-                            if(contactos.traerTablaDeGrupo(index,Tokenizer::campo).fields.size()==Tokenizer::campos.size()){
+                            if(contactos.traerTablaDeGrupo(index,Tokenizer::campo)->fields.size()==Tokenizer::campos.size()){
                             //verifica si los parametros que le esta enviando son iguales a los que guardo
                                 cout<<"Contiene la misma cantidad de parametros"<<endl;
-                                if(utilidades.isCompatibily(contactos.traerTablaDeGrupo(index,Tokenizer::campo).fields,Tokenizer::campos)){
+                                if(utilidades.isCompatibily(contactos.traerTablaDeGrupo(index,Tokenizer::campo)->fields,Tokenizer::campos)){
                                     cout<<"los datos son compatibles y estan listos para ser agregados a los arboles"<<endl;
+                                    utilidades.insertarANodos(contactos.traerTablaDeGrupo(index,Tokenizer::campo)->fields,Tokenizer::campos);
                                 }else{
                                     cout<<"Error: los datos no son compatibles "<<endl;
                                 }
                             }else{
                                 cout<<"Error: la cantidad de datos no coinciden con la cantidad de campos del grupo "<<Tokenizer::campo<<endl;
                             }
-                            cout<<contactos.traerTablaDeGrupo(index,Tokenizer::campo).fields.size()<<endl;
+                            cout<<contactos.traerTablaDeGrupo(index,Tokenizer::campo)->fields.size()<<endl;
                             cout<<Tokenizer::campos.size()<<endl;
                             for(Tokenizer::estructura st:Tokenizer::campos){
                                 cout<<st.name<<"-"<<st.value<<endl;
                             }
                         }else{
                             cout<<"el grupo no existe"<<endl;
+
                         }
                         Tokenizer::campos.clear();
                         contactos.printTable();
+                    }else if(valorAceptacion==3){
+                        int index=contactos.existGruop(Tokenizer::campo);
+                        if(index!=-5){
+                            cout<<"existe el grupo, en el indice "<<index<<endl;
+                            vector<string> lista;
+                            for (Tokenizer::estructura pair : Tokenizer::campos) {
+                                lista.push_back(pair.value);
+                            }
+                            for(FieldTable::Field fl:contactos.traerTablaDeGrupo(index,Tokenizer::campo)->fields){
+                                if(fl.value==lista[0]){
+                                    cout<<"existe el field "<<lista[0]<<" en el cammpo: "<<Tokenizer::campo<<endl;
+                                    cout<<"debemos ahora buscar el contacto: "<<lista[1]<<endl;
+                                    vector<string> listaFields;
+                                    for(FieldTable::Field fll:contactos.traerTablaDeGrupo(index,Tokenizer::campo)->fields){
+                                        listaFields.push_back(fll.value);
+                                    }
+                                    utilidades.imprimirBusqueda(fl.arbol.buscarElemento(lista[1]),listaFields);
+                                    break;
+                                }
+                            }
+
+                        }
                     }
                     else{
                         if(input!="exit"){

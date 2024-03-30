@@ -8,35 +8,39 @@
 
 #include <iostream>
 #include "Date.h"
+#include <vector>
+
 using namespace std;
 
 struct Nodo {
-    string texto;//funciona si son texto o caracteres
-    Date fecha;//si el arbol es para fechas
-    int telefono;//si es numero mas comun es que sea telefono
+    string palabra;//funciona si son texto o caracteres
     Nodo* izquierda;
     Nodo* derecha;
+    Nodo* siguiente;
+    Nodo* anterior;//siguiente y anterior es para saber quienes pertenecen al mismo campo
     int altura;
 };
+
 
 class ArbolAVL {
 public:
     ArbolAVL();
-    void insertar(int telefono);
-    void insertarTxt(string txt);
-    void insertarFecha(Date fecha);
+    void insertar(const string& palabra);
     void imprimirInOrder();
+    vector<Nodo*> buscarElemento(const string& palabra);
+    void buscarElemento(Nodo* nodo, const string& palabra, vector<Nodo*>& nodosEncontrados);
+    Nodo* raiz;
+    Nodo* insertado;
 
 private:
-    Nodo* raiz;
-
     int altura(Nodo* nodo);
     int maximo(int a, int b);
     Nodo* rotarDerecha(Nodo* nodo);
     Nodo* rotarIzquierda(Nodo* nodo);
-    Nodo* insertar(Nodo* nodo, int telefono);
+    Nodo* insertar(Nodo* nodo, const string& palabra);
     void imprimirInOrder(Nodo* nodo);
 };
+
 /*
 int main() {
     ArbolAVL arbol;
