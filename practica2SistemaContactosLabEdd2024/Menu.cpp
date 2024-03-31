@@ -2,16 +2,21 @@
 #include "iostream"
 #include "Utilities.h"
 #include "Reportes.h"
+#include "Exportacion.h"
 using namespace std;
 Menu::~Menu() {
     // Implementación del destructor
 }
 void Menu::inicio() {
     string input="nadaxd";
+    string nombreGrupo="";
+
     vector<Tokens> tokens;
     ContactGroups contactos;
+
     int opcionReportes=-2;
     Reportes reportes;
+    Exportacion exportacion;
     int opcion = 1;
     while (opcion > 0) {
         cout << "Elija una opcion: " << endl;
@@ -148,8 +153,28 @@ void Menu::inicio() {
                 cout << "Seleccionó la opción de Gráficos." << endl;
                 break;
             case 4:
-                cout << "Seleccionó la opción de Exportar." << endl;
+                cout << "Ingrese el nombre del grupo de contacto que desee exportar" << std::endl;
+                for (int i = 0; i < contactos.tableSize; ++i) {
+                    if(!contactos.table[i].empty()){
+                        for (const auto& tabla : contactos.table[i]) {
+                            cout<<tabla.first<<endl;
+                        }
+                    }
+                }
+                cin>>nombreGrupo;
+
+                if(contactos.existGruop(nombreGrupo) != -5){
+                    int indice =contactos.existGruop(nombreGrupo);
+                    cout<<nombreGrupo<<endl;
+                    exportacion.exportar(contactos.table, indice, nombreGrupo);
+                    cout<<"Exportacion con exito!"<<endl;
+                } else{
+                    cout<<"No existe el grupo que deseas exportar "<<endl;
+                }
+
+                //cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 break;
+
             default:
                 cout << "Opción no válida. Por favor, seleccione una opción válida." << endl;
                 break;

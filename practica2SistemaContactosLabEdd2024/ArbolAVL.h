@@ -33,6 +33,8 @@ public:
     Nodo* insertado;
     int contarElementos(Nodo* nodo);
     int contarElementos();
+    vector<Nodo*> obtenerTodosLosNodos();
+    void obtenerTodosLosNodos(Nodo* nodo, vector<Nodo*>& todosLosNodos);
 
 private:
     int altura(Nodo* nodo);

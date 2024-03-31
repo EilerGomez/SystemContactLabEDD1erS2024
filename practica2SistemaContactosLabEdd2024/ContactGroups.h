@@ -127,7 +127,7 @@ public:
             }
         }
         if(exist<0){
-            cout<<"el campo no se encuentra en el idice dado por el hash"<<endl;
+            //cout<<"el campo no se encuentra en el idice dado por el hash"<<endl;
             for (int i = index; i < tableSize; ++i) {
                 for(const auto& pair : table[i]){
                     if(!table[i].empty()){
@@ -139,7 +139,7 @@ public:
                 }
             }
             index = hash(groupName);
-            cout<<index<<endl;
+           // cout<<index<<endl;
             if(exist<0){
                 for (int i = index; i >=0 ; --i) {
                     for(const auto& pair : table[i]){

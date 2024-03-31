@@ -133,3 +133,18 @@ int ArbolAVL::contarElementos() {
     return contarElementos(raiz);
 }
 
+vector<Nodo*> ArbolAVL::obtenerTodosLosNodos() {
+    vector<Nodo*> todosLosNodos;
+    obtenerTodosLosNodos(raiz, todosLosNodos);
+    return todosLosNodos;
+}
+
+void ArbolAVL::obtenerTodosLosNodos(Nodo* nodo, vector<Nodo*>& todosLosNodos) {
+    if (nodo != nullptr) {
+        obtenerTodosLosNodos(nodo->izquierda, todosLosNodos);
+        todosLosNodos.push_back(nodo);
+        obtenerTodosLosNodos(nodo->derecha, todosLosNodos);
+    }
+}
+
+
