@@ -35,6 +35,8 @@ void Menu::inicio() {
                         for(Tokenizer::estructura st: Tokenizer::campos){
                             contactos.insertField(Tokenizer::campo,st.value,st.name, indicetab);
                         }
+                        reportes.llenarCamposTiposDatos(Tokenizer::campo,Tokenizer::campos);
+                        reportes.guardarAccionLog(Tokenizer::campo,Tokenizer::campos,1);
                         contactos.printTable();
                         //cout<<Tokenizer::campos.size()<<endl;
                         cout<<"     Grupo y campos guardados correctamente "<<endl;
@@ -49,6 +51,7 @@ void Menu::inicio() {
                                 if(utilidades.isCompatibily(contactos.traerTablaDeGrupo(index,Tokenizer::campo)->fields,Tokenizer::campos)){
                                     cout<<"los datos son compatibles y estan listos para ser agregados a los arboles"<<endl;
                                     utilidades.insertarANodos(contactos.traerTablaDeGrupo(index,Tokenizer::campo)->fields,Tokenizer::campos);
+                                    reportes.guardarAccionLog(Tokenizer::campo,Tokenizer::campos,2);
                                 }else{
                                     cout<<"Error: los datos no son compatibles "<<endl;
                                 }
@@ -83,6 +86,7 @@ void Menu::inicio() {
                                         listaFields.push_back(fll.value);
                                     }
                                     utilidades.imprimirBusqueda(fl.arbol.buscarElemento(lista[1]),listaFields);
+                                    reportes.guardarAccionLog(Tokenizer::campo,Tokenizer::campos,3);
                                     break;
                                 }
                             }
@@ -121,14 +125,18 @@ void Menu::inicio() {
                             reportes.cantidadDatosTodoElSistema(contactos.table,contactos.tableSize);
                             cout<<"----------------------------------------------------"<<endl;
                             break;
-                        case 3:cout<<"Reporte3"<<endl;
+                        case 3:
+                            cout<<"-------------------------------------"<<endl;
+                            reportes.imprimirCampsTiposDatos();
+                            cout<<"-------------------------------------"<<endl;
                             break;
                         case 4:
                             cout<<"-------------------------------------"<<endl;
                             reportes.cantidadContactosPorGrupo(contactos.table,contactos.tableSize);
                             cout<<"-------------------------------------"<<endl;
                             break;
-                        case 5:cout<<"Reporte5"<<endl;
+                        case 5:cout<<endl;
+                            reportes.mostrarLog();
                             break;
                         default:
                             break;

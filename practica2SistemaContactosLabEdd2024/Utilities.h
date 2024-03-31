@@ -92,13 +92,13 @@ public:
 
     void imprimirContacto(Nodo* nodo, vector<string> fields){
         int i = 0;
-        cout << "CONTACTO: [";
+        cout << "CONTACTO: [ ";
         while(nodo != nullptr){
-            cout << fields[i] << " : " << nodo->palabra << ", ";
+            cout << fields[i] << " : " << nodo->palabra << " ";
             nodo = nodo->siguiente; // Avanzar al siguiente nodo
             i++;
         }
-        cout << "]" << endl;
+        cout << " ]" << endl;
     }
 
     void imprimirBusqueda(vector<Nodo*> nodos, vector<string> fields){
