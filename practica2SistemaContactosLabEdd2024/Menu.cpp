@@ -3,6 +3,7 @@
 #include "Utilities.h"
 #include "Reportes.h"
 #include "Exportacion.h"
+#include "Graficas.h"
 using namespace std;
 Menu::~Menu() {
     // Implementación del destructor
@@ -15,8 +16,10 @@ void Menu::inicio() {
     ContactGroups contactos;
 
     int opcionReportes=-2;
+    int opcionGraficas=-2;
     Reportes reportes;
     Exportacion exportacion;
+    Graficas graficas;
     int opcion = 1;
     while (opcion > 0) {
         cout << "Elija una opcion: " << endl;
@@ -42,50 +45,51 @@ void Menu::inicio() {
                         }
                         reportes.llenarCamposTiposDatos(Tokenizer::campo,Tokenizer::campos);
                         reportes.guardarAccionLog(Tokenizer::campo,Tokenizer::campos,1);
-                        contactos.printTable();
+                        //contactos.printTable();
                         //cout<<Tokenizer::campos.size()<<endl;
                         cout<<"     Grupo y campos guardados correctamente "<<endl;
                         Tokenizer::campos.clear();
                     }else if(valorAceptacion==2){
                         int index=contactos.existGruop(Tokenizer::campo);
                         if(index!=-5){
-                            cout<<"existe el grupo, en el indice "<<index<<endl;
+                            //cout<<"existe el grupo, en el indice "<<index<<endl;
                             if(contactos.traerTablaDeGrupo(index,Tokenizer::campo)->fields.size()==Tokenizer::campos.size()){
                             //verifica si los parametros que le esta enviando son iguales a los que guardo
-                                cout<<"Contiene la misma cantidad de parametros"<<endl;
+                                //cout<<"Contiene la misma cantidad de parametros"<<endl;
                                 if(utilidades.isCompatibily(contactos.traerTablaDeGrupo(index,Tokenizer::campo)->fields,Tokenizer::campos)){
-                                    cout<<"los datos son compatibles y estan listos para ser agregados a los arboles"<<endl;
+                                    //cout<<"los datos son compatibles y estan listos para ser agregados a los arboles"<<endl;
                                     utilidades.insertarANodos(contactos.traerTablaDeGrupo(index,Tokenizer::campo)->fields,Tokenizer::campos);
+                                    cout<<"     Contacto agregado correctamente"<<endl;
                                     reportes.guardarAccionLog(Tokenizer::campo,Tokenizer::campos,2);
                                 }else{
                                     cout<<"Error: los datos no son compatibles "<<endl;
                                 }
                             }else{
                                 cout<<"Error: la cantidad de datos no coinciden con la cantidad de campos del grupo "<<Tokenizer::campo<<endl;
-                            }
+                            }/*
                             cout<<contactos.traerTablaDeGrupo(index,Tokenizer::campo)->fields.size()<<endl;
                             cout<<Tokenizer::campos.size()<<endl;
                             for(Tokenizer::estructura st:Tokenizer::campos){
                                 cout<<st.name<<"-"<<st.value<<endl;
-                            }
+                            }*/
                         }else{
                             cout<<"el grupo no existe"<<endl;
 
                         }
                         Tokenizer::campos.clear();
-                        contactos.printTable();
+                        //contactos.printTable();
                     }else if(valorAceptacion==3){
                         int index=contactos.existGruop(Tokenizer::campo);
                         if(index!=-5){
-                            cout<<"existe el grupo, en el indice "<<index<<endl;
+                            //cout<<"existe el grupo, en el indice "<<index<<endl;
                             vector<string> lista;
                             for (Tokenizer::estructura pair : Tokenizer::campos) {
                                 lista.push_back(pair.value);
                             }
                             for(FieldTable::Field fl:contactos.traerTablaDeGrupo(index,Tokenizer::campo)->fields){
                                 if(fl.value==lista[0]){
-                                    cout<<"existe el field "<<lista[0]<<" en el cammpo: "<<Tokenizer::campo<<endl;
-                                    cout<<"debemos ahora buscar el contacto: "<<lista[1]<<endl;
+                                    //cout<<"existe el field "<<lista[0]<<" en el cammpo: "<<Tokenizer::campo<<endl;
+                                    ///cout<<"debemos ahora buscar el contacto: "<<lista[1]<<endl;
                                     vector<string> listaFields;
                                     for(FieldTable::Field fll:contactos.traerTablaDeGrupo(index,Tokenizer::campo)->fields){
                                         listaFields.push_back(fll.value);
@@ -150,7 +154,41 @@ void Menu::inicio() {
                 opcionReportes=-2;
                 break;
             case 3:
-                cout << "Seleccionó la opción de Gráficos." << endl;
+                cout << "1.Graficar toda la estructura" << endl;
+                cout << "2.Graficar una estructura" << endl;
+                cout << "3.Graficar toda la estructura con todos los datos" << endl;
+                cin>>opcionGraficas;
+                if(opcionGraficas==1){
+                    graficas.graficarTodaLaEstructura(contactos.table,"avl_treeStruct.dot",contactos.tableSize);
+                    system("dot -Tpng avl_treeStruct.dot -o ../Images/avl_treeStruct.png");
+
+                    cout << "Archivo DOT generado exitosamente. Imagen del árbol AVL creada como '../Images/avl_treeStruct.png'." << endl;
+                }else if(opcionGraficas==3){
+                    graficas.graficarEstructuraConDatos(contactos.table,"avl_treeStruct.dot",contactos.tableSize);
+                    system("dot -Tpng avl_treeStruct.dot -o ../Images/avl_treeStructDate.png");
+
+                    cout << "Archivo DOT generado exitosamente. Imagen del árbol AVL creada como '../Images/avl_treeStructDate.png'." << endl;
+                }else if(opcionGraficas==2){
+                    cout << "Ingrese el nombre del grupo de contacto que desee exportar" << std::endl;
+                    for (int i = 0; i < contactos.tableSize; ++i) {
+                        if(!contactos.table[i].empty()){
+                            for (const auto& tabla : contactos.table[i]) {
+                                cout<<tabla.first<<endl;
+                            }
+                        }
+                    }
+                    cin>>nombreGrupo;
+                    int index=contactos.existGruop(nombreGrupo);
+                    if(index!=-5){
+                        graficas.graficarSoloUnaEstructra(contactos.table,"avl_treeStruct.dot",index);
+                        system(("dot -Tpng avl_treeStruct.dot -o ../Images/" + nombreGrupo + ".png").c_str());
+                        cout << "Archivo DOT generado exitosamente. Imagen del árbol AVL creada como ../Images/'"+nombreGrupo+".png'." << endl;
+                    }else{
+                        cout<<"No existe el grupo que deseas Graficar "<<endl;
+                    }
+                }
+
+                opcionGraficas=-2;
                 break;
             case 4:
                 cout << "Ingrese el nombre del grupo de contacto que desee exportar" << std::endl;

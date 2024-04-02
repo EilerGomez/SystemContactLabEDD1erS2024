@@ -16,7 +16,7 @@ public:
     Utilities();
 
     bool isCorrectUnityDate(string nameFt, string nameE){
-        cout<<"comparando "<<nameFt<<" == "<<nameE<<endl;
+        //cout<<"comparando "<<nameFt<<" == "<<nameE<<endl;
         bool iscorrect=false;
         if(nameFt=="STRING"&&nameE=="TEXTO_PLANO"){
             iscorrect=true;
@@ -77,11 +77,11 @@ public:
             i++;
         }
 
-        while(tmp!=nullptr){
+        /*while(tmp!=nullptr){
             cout<<tmp->palabra<<" --- ";
             tmp=tmp->anterior;
-        }
-        cout<<endl;
+        }*/
+        //cout<<endl;
     }
 
     void llevarAlInicio(Nodo* &tmp){

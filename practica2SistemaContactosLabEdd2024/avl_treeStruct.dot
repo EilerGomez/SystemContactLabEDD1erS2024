@@ -1,0 +1,29 @@
+digraph AVLTree {
+label="CONTACTOS";
+labelloc=top;
+clientes_0 [label="clientes", shape=plaintext];
+clientes_campoSep_0_0 [label="name", shape=plaintext];
+clientes_0-> clientes_campoSep_0_0;
+clientes_campoSep_0_0-> "waylin";
+waylin [label="waylin\n2"];
+waylin -> "eiler";
+eiler [label="eiler\n1"];
+waylin -> "waylin2";
+waylin2 [label="waylin2\n1"];
+clientes_campoSep_1_0 [label="tel", shape=plaintext];
+clientes_0-> clientes_campoSep_1_0;
+clientes_campoSep_1_0-> "51641444";
+51641444 [label="51641444\n2"];
+51641444 -> "49737837";
+49737837 [label="49737837\n1"];
+51641444 -> "51641445";
+51641445 [label="51641445\n1"];
+clientes_campoSep_2_0 [label="day", shape=plaintext];
+clientes_0-> clientes_campoSep_2_0;
+clientes_campoSep_2_0-> "2001-03-01";
+"2001-03-01" [label="2001-03-01\n2"];
+"2001-03-01" -> "2000-02-25";
+"2000-02-25" [label="2000-02-25\n1"];
+"2001-03-01" -> "2003-01-04";
+"2003-01-04" [label="2003-01-04\n1"];
+}
