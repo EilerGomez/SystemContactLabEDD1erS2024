@@ -17,4 +17,4 @@ ADD CONTACT IN inges FIELDS ( jose , 25545458 , 2000-02-30 ) ;
 
 FIND CONTACT IN clientes CONTACT-FIELD tel = 51641440 ;
 
-
+destructor
